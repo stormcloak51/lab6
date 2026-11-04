@@ -1,21 +1,21 @@
-from re import findall
+from re import sub
 
 
-# подсчет слов
-def count_words(text: str) -> int:
-    return len(text.split())
+# функция для проверки слвоа-палиндром
+def is_palindrome(text: str) -> bool:
+    # очищает текст (оставляет только буквы и цифры)
+    cleaned = sub(r"[^\w]", "", text.lower())
+    return cleaned == cleaned[::-1]
 
 
-text = input("Введите текст: ")
-print(f"Количество слов: {count_words(text)}")
+tests = [
+    "А роза упала на лапу Азора",
+    "Madam, I'm Adam",
+    "Hello, World!",
+    "12321",
+    "racecar",
+]
 
-
-# подсчет слов с помощью регулярки, игнорируем знаки препиная
-def count_words_clean(text: str) -> int:
-    words = findall(r"\b\w+\b", text)
-    return len(words)
-
-
-text = "Привет, мир! Как дела?"
-print(f"Слов (с пунктуацией): {count_words(text)}")
-print(f"Слов (без пунктуации): {count_words_clean(text)}")
+for text in tests:
+    result = "палиндром" if is_palindrome(text) else "не палиндром"
+    print(f"'{text}' – {result}")
