@@ -1,18 +1,21 @@
-students = [
-    ("Иван", 25, 4.5),
-    ("Мария", 22, 4.85),
-    ("Пётр", 30, 4.2),
-    ("Анна", 20, 4.95),
-]
+ip = input("Введите IP-адрес: ")
+# делим айпишник на октеты
+parts = ip.split(".")
 
-# header
-print(f"{'Имя':<10} {'Возраст':>8} {'Балл':>8}")
-print("-" * 28)
+is_valid = len(parts) == 4
 
-# data
-for name, age, gpa in students:
-    print(f"{name:<10} {age:>8} {gpa:>8.2f}")
+if is_valid:
+    for part in parts:
+        # октет - число, находится в диапозоне [0;255] и не начинается на 0, когда длина > 1
+        if (
+            not part.isdigit()
+            or not (0 <= int(part) <= 255)
+            or (len(part) > 1 and part[0] == "0")
+        ):
+            is_valid = False
+            break
 
-print("-" * 28)
-avg_gpa = sum(s[2] for s in students) / len(students)
-print(f"{'Средний балл':<8} {'':>6} {avg_gpa:>8.2f}")
+if is_valid:
+    print(f"{ip} — корректный IP-адрес")
+else:
+    print(f"{ip} — некорректный IP-адрес")
