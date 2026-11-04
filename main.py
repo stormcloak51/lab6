@@ -1,21 +1,22 @@
-from re import sub
+def caesar_cipher(text: str, shift: int) -> str:
+    """шифрует текст шифром цезаря"""
+    result = []
+    for char in text:
+        # проверяем входит ли символ в алфавит
+        if char.isalpha():
+            base = ord("A") if char.isupper() else ord("a")
+            # делаем сдвиг буквы на shift позиций
+            shifted = (ord(char) - base + shift) % 26 + base
+            result.append(chr(shifted))
+        else:
+            result.append(char)
+    return "".join(result)
 
 
-# функция для проверки слвоа-палиндром
-def is_palindrome(text: str) -> bool:
-    # очищает текст (оставляет только буквы и цифры)
-    cleaned = sub(r"[^\w]", "", text.lower())
-    return cleaned == cleaned[::-1]
+original = "Hello, World!"
+encrypted = caesar_cipher(original, 3)
+print(f"Оригинал: {original}")
+print(f"Зашифровано: {encrypted}")
 
-
-tests = [
-    "А роза упала на лапу Азора",
-    "Madam, I'm Adam",
-    "Hello, World!",
-    "12321",
-    "racecar",
-]
-
-for text in tests:
-    result = "палиндром" if is_palindrome(text) else "не палиндром"
-    print(f"'{text}' – {result}")
+decrypted = caesar_cipher(encrypted, -3)
+print(f"Расшифровано: {decrypted}")
