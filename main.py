@@ -1,14 +1,10 @@
+from collections import Counter
 from re import findall
 
-logs = """
-2026-10-23 10:15:32 INFO Server started
-2026-10-23 10:16:01 ERROR Database connection failed
-2026-10-23 10:17:45 WARNING High memory usage
-2026-10-23 10:18:12 ERROR Timeout while reading request
-"""
+text = input("Введите текст: ")
+words = findall(r"\b\w+\b", text.lower())
+# возвращает топ-10 самых часто встречающих слов
+top_words = Counter(words).most_common(10)
 
-pattern = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ERROR (.+)"
-errors = findall(pattern, logs)
-
-for timestamp, message in errors:
-    print(f"[{timestamp}] {message}")
+for word, count in top_words:
+    print(f"{word}: {count}")
