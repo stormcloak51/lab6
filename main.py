@@ -1,21 +1,14 @@
-ip = input("Введите IP-адрес: ")
-# делим айпишник на октеты
-parts = ip.split(".")
+from re import findall
 
-is_valid = len(parts) == 4
+logs = """
+2026-10-23 10:15:32 INFO Server started
+2026-10-23 10:16:01 ERROR Database connection failed
+2026-10-23 10:17:45 WARNING High memory usage
+2026-10-23 10:18:12 ERROR Timeout while reading request
+"""
 
-if is_valid:
-    for part in parts:
-        # октет - число, находится в диапозоне [0;255] и не начинается на 0, когда длина > 1
-        if (
-            not part.isdigit()
-            or not (0 <= int(part) <= 255)
-            or (len(part) > 1 and part[0] == "0")
-        ):
-            is_valid = False
-            break
+pattern = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ERROR (.+)"
+errors = findall(pattern, logs)
 
-if is_valid:
-    print(f"{ip} — корректный IP-адрес")
-else:
-    print(f"{ip} — некорректный IP-адрес")
+for timestamp, message in errors:
+    print(f"[{timestamp}] {message}")
